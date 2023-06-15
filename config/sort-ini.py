@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 import sys
-import ConfigParser
+import configparser
 
 if len(sys.argv) > 1:
     filename = sys.argv[1]
 else:
     filename = 'config.ini'
     
-oconfig = ConfigParser.RawConfigParser()
+oconfig = configparser.RawConfigParser()
 oconfig.read(filename)
 
 # This part will destroy the configuration if there's a crash while
@@ -18,7 +18,7 @@ with open(filename, 'wb') as fd:
     # Copy of write() code that sorts output by section
     if oconfig._defaults:
         fd.write("[%s]\n" % DEFAULTSECT)
-        for (key, value) in oconfig._defaults.items():
+        for (key, value) in list(oconfig._defaults.items()):
             fd.write("%s = %s\n" % (key, str(value).replace('\n', '\n\t')))
         fd.write("\n")
     
@@ -26,7 +26,7 @@ with open(filename, 'wb') as fd:
     for section in sorted(oconfig._sections):
         if section == 'Planet':
             fd.write("[%s]\n" % section)
-        for (key, value) in oconfig._sections[section].items():
+        for (key, value) in list(oconfig._sections[section].items()):
             if key != "__name__":
                 if section == 'Planet':
                     fd.write("%s = %s\n" %

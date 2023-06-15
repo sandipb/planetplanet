@@ -4,3 +4,6 @@
 /_cache
 /_output
 /.venv
+
+# 2to3
+*.bak
